@@ -1,0 +1,77 @@
+.tablesorter-headerUnSorted {
+    background-image: url(data:image/gif;base64,R0lGODlhFQAJAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAkAAAIXjI+AywnaYnhUMoqt3gZXPmVg94yJVQAAOw==);
+    background-repeat: no-repeat;
+    background-position: center right;
+}
+.tablesorter-headerAsc {
+    background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7);
+    background-repeat: no-repeat;
+    background-position: center right;
+    border-bottom: #000 2px solid;
+}
+.tablesorter-headerDesc {
+    background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7);
+    background-repeat: no-repeat;
+    background-position: center right;
+    border-bottom: #000 2px solid;
+}
+.table-one,
+.table-one > th,
+.table-one > td {
+  background-color: #FF6A6A;
+}
+.table-one th,
+.table-one td,
+.table-one thead th,
+.table-one tbody + tbody {
+  border-color: #ed969e !important;
+}
+.table-two,
+.table-two > th,
+.table-two > td {
+  background-color: #FF8247;
+}
+.table-two th,
+.table-two td,
+.table-two thead th,
+.table-two tbody + tbody {
+  border-color: #86cfda !important;
+}
+.table-three,
+.table-three > th,
+.table-three > td {
+  background-color: #FFD39B;
+}
+.table-three th,
+.table-three td,
+.table-three thead th,
+.table-three tbody + tbody {
+  border-color: #F5DEB3 !important;
+}
+/*包含以下四种的链接*/
+a {
+    text-decoration: none !important;
+    color:#333 !important;
+}
+/*正常的未被访问过的链接*/
+a:link {
+    text-decoration: none !important;
+}
+/*已经访问过的链接*/
+a:visited {
+    text-decoration: none !important;
+}
+/*鼠标划过(停留)的链接*/
+a:hover {
+    text-decoration: none !important;
+}
+/* 正在点击的链接*/
+a:active {
+    text-decoration: none !important;
+}
+a:active{
+-webkit-tap-highlight-color: rgba(255, 255, 255, 0) !important;
+-webkit-user-select: none !important;
+-moz-user-focus: none !important;
+-moz-user-select: none !important;
+}

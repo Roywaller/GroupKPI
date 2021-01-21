@@ -1,0 +1,14 @@
+CONSUMER_KEY = "ここに"
+CONSUMER_SECRET = "Twitterの"
+ACCESS_TOKEN = "Tokenを"
+ACCESS_TOKEN_SECRET = "いれる"
+TO_ADDR = '障害発生時の報告メール送信先'
+FROM_ADDR = '障害発生時の報告メール送信元'
+MAIL_PASS = 'Googleのアプリパスワード'
+TWITTER_ID = "RingFitRanker(呟くアカウントのTwitter_ID)"
+DATABASE_NAME = "RingFitRank.db"
+DATABASE_HOST = "データベースのホスト名"
+DATABASE_PASS = "データベースのパスワード"
+DATABASE_USER = "データベースのユーザ名"
+RANKING_FONT = "ランキング画像のユーザ名に用いるフォント"
+KCAL_FONT = "ランキング画像の消費カロリーに用いるフォント"

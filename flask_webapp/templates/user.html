@@ -1,0 +1,118 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}个人统计{% endblock %}
+
+{% import "bootstrap/google.html" as google %}
+
+{% block head %}
+{{ super() }}
+<link rel="icon" href="{{ url_for('static', filename='favicon.png') }}">
+<script src="https://cdn.jsdelivr.net/npm/layui-laydate@5.0.9/src/laydate.min.js"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tablesorter.css') }}">
+<link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+
+{% endblock %}
+
+{% block scripts %}
+{{super()}}
+{{google.uanalytics('UA-168052698-1')}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.1/js/jquery.tablesorter.min.js"></script>
+<script>
+		laydate.render({
+            elem: '#test2',
+            type: 'year',
+            btns: ['now', 'confirm'],
+            min: '2015-1-1',
+            max: '2021-12-31',
+            isInitValue: false,
+            ready: function (date) {
+                $(".layui-laydate").on('click', 'ul li', function () {
+                    $(".layui-laydate").remove();
+                });
+            },
+            change: function (value) {
+                $("#test2").val(value);
+            }
+        });
+
+</script>
+<script>
+    $(document).ready(function() {
+    $('#rankingTable').tablesorter();
+});
+</script>
+{% endblock %}
+
+{% block content %}
+<style>
+br{
+clear:both;
+}
+
+#divcss5{ margin:10px auto 20px auto;}
+#divcss5 img{ border-radius:50%}
+
+ul{width:auto;}
+ul li { list-style: none; width:auto; height:auto; display:inline-block;}
+ul li a{ float: none; display:block;}
+ul li a span{display:block;}
+
+</style>
+<header>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">2020HAPI报告</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li><a href="/">年度划水排名</a></li>
+            <li><a href="hapi">年度哈哈哈排名</a></li>
+            <li class="active"><a href="user">个人统计</a></li>
+           </ul>
+         </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+</header>
+<div class="container">
+
+
+
+
+    <h2 >个人统计</h2>
+    <hr style="margin-top:0.5em;margin-bottom:1em;">
+                <div class="form-inline">
+                    <form class="form-group">
+                        <label>年份：</label>
+                        <input type="text" id="test2" name="year" readonly="readonly" value="{{start_year}}">
+                        <button type="submit"  class="btn btn-primary" >查询</button>
+                    </form>
+                </div>
+    <div style="text-align:center;">{{ pagination.links }}</div>
+    <ul id="divcss5">
+    {% for result in results %}
+        <li style="margin:5px;">
+        <a href="/userdata?user={{ result[1] }}&year={{start_year}}&type=buca">
+            <img style="width:100px;padding-bottom:5px;" src="{{ result[0] }}" >
+        </a>
+            <a style="align:center!important;" href="/personal?user={{ result[1] }}&year={{start_year}}">查看年度报告</a>
+        </li>
+    {% endfor %}
+    </ul>
+    <div style="text-align:center;">{{ pagination.links }}</div>
+    <div style="text-align:center;">{{ pagination.info }}</div>
+
+{% include "footer.html" %}
+
+</div>
+
+
+
+{% endblock %}

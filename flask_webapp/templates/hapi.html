@@ -1,0 +1,125 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}年度哈哈哈排名{% endblock %}
+
+{% import "bootstrap/google.html" as google %}
+
+{% block head %}
+{{ super() }}
+<link rel="icon" href="{{ url_for('static', filename='favicon.png') }}">
+<script src="https://cdn.jsdelivr.net/npm/layui-laydate@5.0.9/src/laydate.min.js"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tablesorter.css') }}">
+<link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+
+{% endblock %}
+
+{% block scripts %}
+{{super()}}
+{{google.uanalytics('UA-168052698-1')}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.1/js/jquery.tablesorter.min.js"></script>
+<script>
+		laydate.render({
+            elem: '#test2',
+            type: 'year',
+            btns: ['now', 'confirm'],
+            min: '2015-1-1',
+            max: '2021-12-31',
+            isInitValue: false,
+            ready: function (date) {
+                $(".layui-laydate").on('click', 'ul li', function () {
+                    $(".layui-laydate").remove();
+                });
+            },
+            change: function (value) {
+                $("#test2").val(value);
+            }
+        });
+
+</script>
+<script>
+    $(document).ready(function() {
+    $('#rankingTable').tablesorter();
+});
+</script>
+{% endblock %}
+
+{% block content %}
+<header>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">2020HAPI报告</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li><a href="/">年度划水排名</a></li>
+            <li class="active"><a href="hapi">年度哈哈哈排名</a></li>
+            <li><a href="user">个人统计</a></li>
+           </ul>
+         </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+</header>
+<div class="container">
+
+
+
+
+    <h2 >年度哈哈哈排名</h2>
+    <hr style="margin-top:0.5em;margin-bottom:1em;">
+                <div class="form-inline">
+                    <form class="form-group">
+                        <label>年份：</label>
+                        <input type="text" id="test2" name="year" readonly="readonly" value="{{start_year}}">
+                        <button type="submit"  class="btn btn-primary" >查询</button>
+                    </form>
+                </div>
+    <div style="text-align:center;">{{ pagination.links }}</div>
+    <div><p style="color:#FF6A6A;display: inline;">■</p>&nbsp&nbsp第一名&nbsp&nbsp&nbsp&nbsp<p style="color:#FF8247;display: inline;">■</p>&nbsp&nbsp第二名&nbsp&nbsp&nbsp&nbsp<p style="color:#FFD39B;display: inline;">■</p>&nbsp&nbsp第三名</div>
+
+          <div class="table-responsive">
+            <table class="tablesorter table table-striped table-s" id="rankingTable">
+              <thead>
+                <tr>
+                  <th>排名</th>
+                  <th>昵称</th>
+                  <th>哈哈哈总数</th>
+                </tr>
+              </thead>
+              <tbody>
+    {% for result in results %}
+    {% if result[3] == 1 %}
+    <tr class="table-one">
+    {% elif result[3] == 2 %}
+    <tr class="table-two">
+    {% elif result[3] == 3 %}
+    <tr class="table-three">
+    {% else %}
+    <tr>
+    {% endif %}
+        <td>第 {{ result[3] }} 名</td>
+        <td><a href="/userdata?user={{ result[1] }}&year={{start_year}}&type=hapi"><img style="width:50px" src="{{ result[0] }}" >  {{ result[1] }}</a></td>
+        <td>{{ result[2] }} 条</td>
+    </tr>
+    {% endfor %}
+
+               </tbody>
+            </table>
+          </div>
+    <div style="text-align:center;">{{ pagination.links }}</div>
+    <div style="text-align:center;">{{ pagination.info }}</div>
+
+{% include "footer.html" %}
+
+</div>
+
+
+
+{% endblock %}

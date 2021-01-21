@@ -1,0 +1,104 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}运动时间分析{% endblock %}
+
+{% import "bootstrap/google.html" as google %}
+
+{% block head %}
+{{ super() }}
+<link rel="icon" href="{{ url_for('static', filename='favicon.png') }}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/zh.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+{% endblock %}
+
+{% block scripts %}
+{{super()}}
+{{google.uanalytics('UA-168052698-1')}}
+
+{% endblock %}
+
+
+{% block content %}
+
+<header>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">RingFit Ranker</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li><a href="/">单日排行</a></li>
+            <li><a href="user">个人记录</a></li>
+            <li class="active"><a href="analytics">运动时间分析</a></li>
+            <li><a href="about">关于</a></li>
+           </ul>
+         </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+</header>
+
+<div class="container">
+
+
+
+
+    <h2 >运动时间 分布</h2> <div class="text-muted">({{start_t}} ～ {{stop_t}})</div>
+    <hr style="margin-top:0.5em;margin-bottom:1em;">
+                <div class="form-inline">
+                    <form class="form-group">
+                        <label>日期：</label>
+                        <input class="flatpickr_start" type="text" placeholder="Select Date.." readonly="readonly" name="day">
+                        <button type="submit"  class="btn btn-primary">查询</button>
+                    </form>
+                </div>
+<br>
+    <canvas id="ChartDemo"></canvas>
+
+
+
+{% include "footer.html" %}
+
+</div>
+<script>
+const config_start = {
+    maxDate:"{{max_day}}",
+    minDate:"2020-12-09",
+  dateFormat: "Y-m-d",
+  defaultDate: "{{start_day}}",
+  locale:"zh"
+}
+    flatpickr('.flatpickr_start',config_start);
+
+</script>
+
+    <script>
+      var ctx = document.getElementById("ChartDemo").getContext('2d');
+      var ChartDemo = new Chart(ctx, {
+           type: 'line',
+           data: {
+              labels: ["4时","5时","6时","7时","8时","9时","10时","11时","12时","13时","14时","15时","16时","17时","18时","19时","20时","21时","22时","23时","0时","1时","2时","3时"],
+              datasets: [
+              {
+                 label: "{{start_day}} 的运动时间分布",
+                 borderColor: 'rgb(255, 0, 0)',
+                 data: {{n}},
+              },
+              ]
+           },
+           options: {
+              responsive: true,
+           }
+      });
+    </script>
+
+{% endblock %}

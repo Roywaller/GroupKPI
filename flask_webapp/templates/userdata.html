@@ -1,0 +1,147 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}个人划水统计{% endblock %}
+
+{% import "bootstrap/google.html" as google %}
+
+{% block head %}
+{{ super() }}
+<link rel="icon" href="{{ url_for('static', filename='favicon.png') }}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/zh.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tablesorter.css') }}">
+{% endblock %}
+
+{% block scripts %}
+{{super()}}
+{{google.uanalytics('UA-168052698-1')}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.1/js/jquery.tablesorter.min.js"></script>
+<script>
+    $(document).ready(function() {
+    $('#personalTable').tablesorter();
+});
+</script>
+{% endblock %}
+
+
+{% block content %}
+<style>
+.imgBox {
+    text-align:center;
+    width:200px;
+    margin:0 auto;
+}
+.imgBox img {
+border-radius:50%
+}
+</style>
+<header>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">2020HAPI报告</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li><a href="/">年度划水排名</a></li>
+            <li><a href="hapi">年度哈哈哈排名</a></li>
+            <li class="active"><a href="user">个人统计</a></li>
+           </ul>
+         </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+</header>
+<div class="container">
+    {% if title == "划水" %}
+    <h2 style="display:inline-block;border-bottom:3px solid #FF6384;">
+    {% else %}
+    <h2 style="display:inline-block;">
+    {% endif %}
+    <a style="line-height:50px" href="/userdata?user={{ user }}&year={{stop_year}}&type=buca"> 划水统计 </a>
+    </h2>
+    {% if title == "哈哈哈" %}
+    <h2 style="display:inline-block;border-bottom:3px solid #FF6384;">
+    {% else %}
+    <h2 style="display:inline-block;">
+    {% endif %}
+    <a style="line-height:50px" href="/userdata?user={{ user }}&year={{stop_year}}&type=hapi"> 哈哈哈统计 </a>
+    </h2>
+    <hr style="margin-top:0.5em;margin-bottom:1em;">
+    <div class="imgBox">
+        <img style="margin: 0 auto;width:150px" src="{{ img }}">
+        <p></p>
+    </div>
+<canvas id="myChart" width="400" height="150"></canvas>
+<script>
+{% autoescape false %}
+var ctx = document.getElementById("myChart");
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: {{ chartcal }},
+        datasets: [{
+            label: '{{title}}(次)',
+            data: {{ chartcre }},
+            backgroundColor: "rgba(255, 99, 132, 0.6)",
+            borderColor: "rgba(255, 99, 132, 1)",
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+{% endautoescape %}
+</script>
+    <div style="text-align:center;">{{ pagination.links }}</div>
+          <div class="table-responsive">
+            <table class="tablesorter table table-striped table-sm"  id="personalTable">
+              <thead>
+                <tr>
+                  <th>日期</th>
+                  <th>日{{title}}</th>
+                </tr>
+              </thead>
+              <tbody>
+    {% for result in results %}
+    {% if result[0] == 1 %}
+    <tr class="table-one">
+    {% elif result[0] == 2 %}
+    <tr class="table-two">
+    {% elif result[0] == 3 %}
+    <tr class="table-three">
+    {% else %}
+    <tr>
+    {% endif %}
+        <td>{{ result[0] }}</td>
+        <td>{{ result[1] }} 次</td>
+    </tr>
+    {% endfor %}
+
+               </tbody>
+            </table>
+          </div>
+    <div style="text-align:center;">{{ pagination.links }}</div>
+    <div style="text-align:center;">{{ pagination.info }}</div>
+
+
+{% include "footer.html" %}
+
+</div>
+
+{% endblock %}
