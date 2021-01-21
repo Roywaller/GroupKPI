@@ -1,0 +1,50 @@
+name: AutoRun
+
+on:
+  #push:
+    #branches: 
+      #- master
+  schedule:
+    #每天北京时间06点30运行一次
+    - cron: 31 22 * * *
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.event.repository.owner.id == github.event.sender.id
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          # This path is specific to Ubuntu
+          path: ~/.cache/pip
+          # Look to see if there is a cache hit for the corresponding requirements file
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+            ${{ runner.os }}-
+      - name: Install extensions
+        run: |
+          pip3 install --upgrade pip
+          pip3 install setuptools
+          pip3 install -r requirements.txt
+      - name: Run kcal
+        run: |
+          python3 kcal.py
+      - name: Run wbpost
+        run: |
+          python3 wbpost.py
+      - name: commit
+        run: |
+          git config --global user.email roywaller@126.com
+          git config --global user.name roywaller
+          git add .
+          git commit -m "update" -a
+          
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
