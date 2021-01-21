@@ -1,9 +1,9 @@
 name: AutoRun
 
 on:
-  #push:
-    #branches: 
-      #- master
+  push:
+    branches: 
+      - master
   schedule:
     #每天北京时间06点30运行一次
     - cron: 31 22 * * *
@@ -32,10 +32,7 @@ jobs:
           pip3 install -r requirements.txt
       - name: Run kcal
         run: |
-          python3 kcal.py
-      - name: Run wbpost
-        run: |
-          python3 wbpost.py
+          python3 flask_webapp/info_pages.py
       - name: commit
         run: |
           git config --global user.email roywaller@126.com
