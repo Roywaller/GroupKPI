@@ -7,13 +7,8 @@ import datetime
 import pandas as pd
 from info_api import module_api  # 附加模块
 import sqlite3
-from wordcloud import WordCloud
-import matplotlib.pyplot as plt
 import jieba
-import os
 import re
-import numpy as np
-from PIL import Image
 
 app = Flask(__name__)
 app.debug = True
